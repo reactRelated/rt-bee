@@ -133,10 +133,10 @@ webpackConfig.module.loaders = [{
 // ------------------------------------
 // We use cssnano with the postcss loader, so we tell
 // css-loader not to duplicate minimization.
-/*
+
 const BASE_CSS_LOADER = 'css?sourceMap&-minimize'
 
-webpackConfig.module.loaders.push({
+/*webpackConfig.module.loaders.push({
   test    : /\.scss$/,
   exclude : null,
   loaders : [
@@ -145,7 +145,7 @@ webpackConfig.module.loaders.push({
     'postcss',
     'sass?sourceMap'
   ]
-})
+})*/
 webpackConfig.module.loaders.push({
   test    : /\.css$/,
   exclude : null,
@@ -156,7 +156,7 @@ webpackConfig.module.loaders.push({
   ]
 })
 
-webpackConfig.sassLoader = {
+/*webpackConfig.sassLoader = {
   includePaths : project.paths.client('styles')
 }
 

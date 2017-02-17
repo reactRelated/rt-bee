@@ -10,9 +10,12 @@ debug('Creating default configuration.')
 // Default Configuration
 // ========================================================
 const config = {
-  env : process.env.NODE_ENV || 'development',
+
     //代理地址
-  http_agent : '192.168.1.119:8082',
+    http_agent : '192.168.1.112:8081',
+    http_prefix : 'AdminApi',
+
+    env : process.env.NODE_ENV || 'development',
 
   // ----------------------------------
   // Project Structure
@@ -28,7 +31,7 @@ const config = {
   // Server Configuration
   // ----------------------------------
   server_host : ip.address(), // 使用字符串“localhost”,以防止暴露在本地网络
-  server_port : process.env.PORT || 8089,
+  server_port : process.env.PORT || 8888,
 
   // ----------------------------------
   // Compiler Configuration

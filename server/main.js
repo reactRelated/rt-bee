@@ -12,7 +12,7 @@ const app = express()
 
 // Apply gzip compression
 // app.use(compress())
-app.use('/adminApiServer', proxy({target: project.http_agent, changeOrigin: true}));
+app.use(project.http_prefix, proxy({target: project.http_agent, changeOrigin: true}));
 // ------------------------------------
 // 应用Webpack HMR中间件
 // ------------------------------------
