@@ -13,12 +13,16 @@ const Signin = Form.create()(React.createClass({
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+
+
+                this.props.actions.handleSubmit(values)
             }
         });
     },
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { actions } = this.props;
+
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormItem>
@@ -46,6 +50,9 @@ const Signin = Form.create()(React.createClass({
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Log in
                     </Button>
+                    <Button type="primary" onClick={actions.signinPostSubmit} className="login-form-button">
+                        ajax
+                    </Button>
                     Or <a>register now!</a>
                 </FormItem>
             </Form>
@@ -54,12 +61,14 @@ const Signin = Form.create()(React.createClass({
 }));
 
 
+
 const mapStateToProps = (state) => ({
 
 })
 /*const mapDispatchToProps = {
     ...key
 }*/
+
 
 
 //合并 Action

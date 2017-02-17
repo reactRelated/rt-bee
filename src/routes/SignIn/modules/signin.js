@@ -38,10 +38,16 @@ export function  signinPostSubmit() {
     }
 }
 
+
+export function  handleSubmit(values) {
+    console.log('Received values of form OK: ', values);
+}
+
 //统一输入到 props.actions 管道中
 export const actions = {
    signinSubmit,
-   signinPostSubmit
+   signinPostSubmit,
+    handleSubmit
 }
 
 // ------------------------------------

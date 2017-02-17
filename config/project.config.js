@@ -12,7 +12,7 @@ debug('Creating default configuration.')
 const config = {
 
     //代理地址
-    http_agent : '192.168.1.112:8081',
+    http_agent : '192.168.1.100:8081',
     http_prefix : 'AdminApi',
 
     env : process.env.NODE_ENV || 'development',
