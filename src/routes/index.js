@@ -2,19 +2,16 @@
 import CoreLayout from '../layouts/CoreLayout'
 import Home from './Home'
 import SignInRoute from './SignIn'
-
 /*  Note: 使用react-router PlainRoute 对象建立路由的定义。   */
 
 export const createRoutes = (store) => ({
-
-    path        : '/',
-    component   : CoreLayout,
-    indexRoute  : Home,
-    Route:{ path: '/',},
-    childRoutes : [
-        SignInRoute(store)
-    ]
-})
+        path: '/',
+        component: CoreLayout,
+        indexRoute: Home,
+        childRoutes: [
+            SignInRoute(store)
+        ]
+    })
 
 /*  Note: childRoutes可以分块或编程加载用getChildRoutes以下签名:
 

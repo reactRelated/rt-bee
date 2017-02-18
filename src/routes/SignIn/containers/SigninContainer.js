@@ -3,9 +3,8 @@ import { bindActionCreators } from 'redux'
 
 import { connect, } from 'react-redux'
 import {actions} from '../modules/signin'
-// import Signin from '../components/Signin'
 
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button, Checkbox ,Col ,Row } from 'antd';
 const FormItem = Form.Item;
 
 const Signin = Form.create()(React.createClass({
@@ -22,10 +21,10 @@ const Signin = Form.create()(React.createClass({
     render() {
         const { getFieldDecorator } = this.props.form;
         const { actions } = this.props;
-
         return (
-            <div style={{ width:300}}>
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Row>
+                <Col span={8} offset={8} style={{margin:30}}>
+                <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormItem>
                     {getFieldDecorator('userName', {
                         rules: [{ required: true, message: '请输入您的用户名!' }],
@@ -51,13 +50,14 @@ const Signin = Form.create()(React.createClass({
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Log in
                     </Button>
-                    <Button type="primary" onClick={actions.signinPostSubmit} className="login-form-button">
+                   {/* <Button type="primary" onClick={actions.signinPostSubmit} className="login-form-button">
                         ajax
-                    </Button>
+                    </Button>*/}
                     Or <a>register now!</a>
                 </FormItem>
             </Form>
-            </div>
+            </Col >
+            </Row>
         );
     },
 }));

@@ -8,7 +8,6 @@ export default (store) => ({
             /*  依赖注入   */
             const Signin = require('./containers/SigninContainer').default
             const reducer = require('./modules/signin').default
-
             /*  添加一个 有key  的 reducer  */
             injectReducer(store, { key: 'signin', reducer })
 
