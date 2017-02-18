@@ -6,9 +6,11 @@ import SignInRoute from './SignIn'
 /*  Note: 使用react-router PlainRoute 对象建立路由的定义。   */
 
 export const createRoutes = (store) => ({
+
     path        : '/',
     component   : CoreLayout,
     indexRoute  : Home,
+    Route:{ path: '/',},
     childRoutes : [
         SignInRoute(store)
     ]

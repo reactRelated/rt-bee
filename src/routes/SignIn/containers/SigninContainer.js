@@ -24,17 +24,18 @@ const Signin = Form.create()(React.createClass({
         const { actions } = this.props;
 
         return (
+            <div style={{ width:300}}>
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormItem>
                     {getFieldDecorator('userName', {
-                        rules: [{ required: true, message: 'Please input your username!' }],
+                        rules: [{ required: true, message: '请输入您的用户名!' }],
                     })(
                         <Input addonBefore={<Icon type="user" />} placeholder="Username" />
                     )}
                 </FormItem>
                 <FormItem>
                     {getFieldDecorator('password', {
-                        rules: [{ required: true, message: 'Please input your Password!' }],
+                        rules: [{ required: true, message: '请你输入密码!' }],
                     })(
                         <Input addonBefore={<Icon type="lock" />} type="password" placeholder="Password" />
                     )}
@@ -56,6 +57,7 @@ const Signin = Form.create()(React.createClass({
                     Or <a>register now!</a>
                 </FormItem>
             </Form>
+            </div>
         );
     },
 }));
