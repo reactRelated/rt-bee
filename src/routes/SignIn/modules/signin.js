@@ -1,4 +1,5 @@
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch';
+import queryString  from 'query-string';
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -24,6 +25,7 @@ const requestPosts = () => ({
 
 //获取数据成功
 const receivePosts = (json) => {
+    console.log(json)
     return{
         type: RECEIVE_POSTS,
         json
@@ -41,19 +43,20 @@ export function  signinPostSubmit() {
 
 
 export function  handleSubmit(values) {
-    console.log('Received values of form OK: ', values.userName,values.password);
+    console.log('Received values of form OK: ', values);
     return dispatch => {
         dispatch(requestPosts());
-        return fetch(`${__SERVER_HOST__}/AdminApi/SignIn?XDEBUG_SESSION_START=PHPSTORM`,{
+        return fetch(`${__SERVER_HOST__}/AdminApi/SignIn`,{
             method:'POST',
+            credentials: 'include',
             headers: {
                 'cookie':'XDEBUG_SESSION=PHPSTORM',
-                'Content-Type':'application/x-www-form-urlencoded'
+                'content-type':'application/x-www-form-urlencoded'
             },
-            body:{
-                usernam:values.userName,
+            body:queryString.stringify({
+                username:values.username,
                 password:values.password
-            }
+            })
         }).then(response => response.json())
             .then(json => dispatch(receivePosts(json)))
     }

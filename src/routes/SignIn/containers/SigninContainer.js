@@ -26,7 +26,7 @@ class NormalLoginForm extends React.Component {
         return (
             <Form id="login-form" onSubmit={this.handleSubmit} className="login-form">
                 <FormItem>
-                    {getFieldDecorator('userName', {
+                    {getFieldDecorator('username', {
                         rules: [{ required: true, message: '请输入用户名!' }],
                     })(
                         <Input addonBefore={<Icon type="user" />} placeholder="用户名" />
@@ -59,17 +59,12 @@ class NormalLoginForm extends React.Component {
 
 const Signin = Form.create()(NormalLoginForm);
 
-
-
-
 const mapStateToProps = (state) => ({
 
 });
 /*const mapDispatchToProps = {
     ...key
 }*/
-
-
 
 //合并 Action
 const mapDispatchToProps = dispatch => ({
