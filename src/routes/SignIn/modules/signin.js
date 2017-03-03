@@ -23,16 +23,17 @@ const requestPosts = () => ({
     });
 
 //获取数据成功
-const receivePosts = (json) => ({
-    type: RECEIVE_POSTS,
-    json
-})
-
+const receivePosts = (json) => {
+    return{
+        type: RECEIVE_POSTS,
+        json
+    }
+};
 
 export function  signinPostSubmit() {
     return dispatch => {
         dispatch(requestPosts());
-        return fetch(`${__SERVER_HOST__}/adminApiServer/User/login`)
+        return fetch(`${__SERVER_HOST__}/AdminApi/SignIn`)
             .then(response => response.json())
             .then(json => dispatch(receivePosts( json)))
     }
@@ -40,7 +41,22 @@ export function  signinPostSubmit() {
 
 
 export function  handleSubmit(values) {
-    console.log('Received values of form OK: ', values);
+    console.log('Received values of form OK: ', values.userName,values.password);
+    return dispatch => {
+        dispatch(requestPosts());
+        return fetch(`${__SERVER_HOST__}/AdminApi/SignIn?XDEBUG_SESSION_START=PHPSTORM`,{
+            method:'POST',
+            headers: {
+                'cookie':'XDEBUG_SESSION=PHPSTORM',
+                'Content-Type':'application/x-www-form-urlencoded'
+            },
+            body:{
+                usernam:values.userName,
+                password:values.password
+            }
+        }).then(response => response.json())
+            .then(json => dispatch(receivePosts(json)))
+    }
 }
 
 //统一输入到 props.actions 管道中

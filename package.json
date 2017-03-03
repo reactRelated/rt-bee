@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "antd": "^2.7.1",
+    "antd": "^2.7.4",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.0",
     "babel-plugin-transform-runtime": "^6.23.0",
