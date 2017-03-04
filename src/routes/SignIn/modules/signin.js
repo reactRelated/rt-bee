@@ -1,51 +1,26 @@
-import fetch from 'isomorphic-fetch';
-import queryString  from 'query-string';
+/*import fetch from 'isomorphic-fetch';
+import queryString  from 'query-string';*/
+
+import {fetchMethods} from '../../../tools/networkFetch'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const SIGNIN_SUBMIT = 'SIGNIN_SUBMIT'; //登录--提交
-export const REQUEST_POSTS = 'REQUEST_POSTS';
-export const RECEIVE_POSTS = 'RECEIVE_POSTS';
+export const SIGNIN_POST = 'SIGNIN_POST'; //登录请求
+
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 
-export function  signinSubmit(data ={}) {
-    return {
-        type    : SIGNIN_SUBMIT,
-        signin : data
-    }
+export function  signInPost(data={}) {
+
+   let ant = Object.assign({ type : SIGNIN_POST },data);
+    return ant;
 }
-
-//开始获取数据
-const requestPosts = () => ({
-        type: REQUEST_POSTS
-    });
-
-//获取数据成功
-const receivePosts = (json) => {
-    console.log(json)
-    return{
-        type: RECEIVE_POSTS,
-        json
-    }
-};
-
-export function  signinPostSubmit() {
-    return dispatch => {
-        dispatch(requestPosts());
-        return fetch(`${__SERVER_HOST__}/AdminApi/SignIn`)
-            .then(response => response.json())
-            .then(json => dispatch(receivePosts( json)))
-    }
-}
-
-
-export function  handleSubmit(values) {
+/*export function  handleSubmit(values) {
     console.log('Received values of form OK: ', values);
     return dispatch => {
-        dispatch(requestPosts());
+        dispatch(signInPost());
         return fetch(`${__SERVER_HOST__}/AdminApi/SignIn`,{
             method:'POST',
             credentials: 'include',
@@ -58,16 +33,42 @@ export function  handleSubmit(values) {
                 password:values.password
             })
         }).then(response => response.json())
-            .then(json => dispatch(receivePosts(json)))
+            .then(json => dispatch(signInPost({status:'success'},json)))
+            .catch(json => dispatch(signInPost({
+                status: 'error'
+            },json)))
+    }
+}*/
+
+export function  handleSubmit(values,cb) {
+    return dispatch => {
+        dispatch(signInPost());
+        return fetchMethods.Post({
+            url:`${__SERVER_HOST__}/AdminApi/SignIn`,
+            body:{
+                username:values.username,
+                password:values.password
+            },
+            success: (res) => {
+                console.log(res)
+
+                dispatch(signInPost({status:'success'},res));
+                cb();
+            },
+            error: (ex) => {
+                console.log(ex)
+                return dispatch(signInPost({
+                    status: 'error'
+                },ex));
+            }
+        })
     }
 }
 
 //统一输入到 props.actions 管道中
 export const actions = {
-   signinSubmit,
-   signinPostSubmit,
     handleSubmit
-}
+};
 
 // ------------------------------------
 // Action Handlers
@@ -77,16 +78,33 @@ export const actions = {
 // Reducer
 // ------------------------------------
 
-export default function signInReducer (state = {} , action) {
+const initialState = {
+    isFetching: false
+};
+
+export default function signInReducer (state = initialState , action) {
     switch(action.type){
-        case SIGNIN_SUBMIT:
-            console.log("登陆操作")
-            return state;
-        case REQUEST_POSTS:
-            console.log("开始请求")
-            return state;
-        case RECEIVE_POSTS:
-            console.log("获得响应")
+        case SIGNIN_POST:
+              if(action.status == 'success'){
+                  console.log('成功请求')
+                  state = Object.assign({},{
+                      isFetching: false
+                  });
+
+                  return state
+              }else if(action.status == 'error') {
+                  console.log('请求失败')
+                  state = Object.assign({},{
+                      isFetching: false
+                  });
+                  return state
+              }else {
+                  console.log('请求开始')
+                  state = Object.assign({},{
+                      isFetching: true
+                  });
+                  return state
+              }
             return state;
         default:
             return state

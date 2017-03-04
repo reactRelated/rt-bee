@@ -1,9 +1,8 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
-
+import { browserHistory } from 'react-router'
 import { connect, } from 'react-redux'
 import {actions} from '../modules/signin'
-
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 const FormItem = Form.Item;
 
@@ -13,12 +12,19 @@ import './SigninContainer.css'
 class NormalLoginForm extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
+        console.log(this)
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.props.actions.handleSubmit(values)
+                this.props.actions.handleSubmit(values,function () {
+                    browserHistory.push({
+                        pathname: '/',
+                        state: { fromDashboard: true }
+                    })
+                })
             }
         });
-    }
+    };
+
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -34,10 +40,11 @@ class NormalLoginForm extends React.Component {
                 </FormItem>
                 <FormItem>
                     {getFieldDecorator('password', {
-                        rules: [{ required: true, message: '请输入密码!' }],
-                    })(
-                        <Input addonBefore={<Icon type="lock" />} type="password" placeholder="密码" />
-                    )}
+                        rules: [
+                            { required: true, message: '请输入密码!' },
+                           ],
+                    })
+                    (<Input addonBefore={<Icon type="lock" />} type="password" placeholder="密码" />)}
                 </FormItem>
                 <FormItem>
                     {getFieldDecorator('remember', {
@@ -59,6 +66,7 @@ class NormalLoginForm extends React.Component {
 
 const Signin = Form.create()(NormalLoginForm);
 
+
 const mapStateToProps = (state) => ({
 
 });
@@ -66,8 +74,10 @@ const mapStateToProps = (state) => ({
     ...key
 }*/
 
+
+
 //合并 Action
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(actions, dispatch)
-})
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Signin)

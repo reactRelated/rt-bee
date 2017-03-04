@@ -31,7 +31,7 @@ if (project.env === 'development') {
   }))
   app.use(require('webpack-hot-middleware')(compiler, {
     path: '/__webpack_hmr'
-  }))
+  }));
 
    /*服务从~ /公共静态资产因为Webpack是不知道的这些文件。外面这个中间件不需要启用的发展将该目录复制到~ / dist 当应用程序被编译。*/
   app.use(express.static(project.paths.public()))
