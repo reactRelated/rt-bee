@@ -40,7 +40,8 @@ export default (initialState = {}) => {
   // store 里面创建 asyncReducers 集合 存储异步 Reducer
   // ======================================================
   store.asyncReducers = {};
-
+  console.log(store);
+  // 包裹 https://www.npmjs.com/package/history
   // 任何时候 退订,调用“store.unsubscribeHistory()“
   store.unsubscribeHistory = browserHistory.listen(updateLocation(store))
 

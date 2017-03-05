@@ -11,6 +11,7 @@ export const HomeView = () => (
       className='duck'
       />
       <Link to="/signin">signin</Link>
+      {console.log(this)}
   </div>
 );
 
