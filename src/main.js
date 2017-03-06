@@ -22,9 +22,11 @@ let render = () => {
     <AppContainer store={store} routes={routes} />,
     MOUNT_NODE
   )
-}
+};
+/*
 console.log(__SERVER_HOST__)
 console.log(__DEV__)
+*/
 
 
 //这段代码是排除在生产包
@@ -36,7 +38,7 @@ if (__DEV__) {
       const RedBox = require('redbox-react').default
 
       ReactDOM.render(<RedBox error={error} />, MOUNT_NODE)
-    }
+    };
 
     // Wrap render in try/catch
     render = () => {

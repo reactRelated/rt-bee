@@ -1,6 +1,3 @@
-/*import fetch from 'isomorphic-fetch';
-import queryString  from 'query-string';*/
-
 import {fetchMethods} from '../../../tools/networkFetch'
 // ------------------------------------
 // Constants
@@ -87,20 +84,20 @@ export default function signInReducer (state = initialState , action) {
         case SIGNIN_POST:
               if(action.status == 'success'){
                   console.log('成功请求')
-                  state = Object.assign({},{
+                  state = Object.assign({},state,{
                       isFetching: false
                   });
 
                   return state
               }else if(action.status == 'error') {
                   console.log('请求失败')
-                  state = Object.assign({},{
+                  state = Object.assign({},state,{
                       isFetching: false
                   });
                   return state
               }else {
                   console.log('请求开始')
-                  state = Object.assign({},{
+                  state = Object.assign({},state,{
                       isFetching: true
                   });
                   return state

@@ -7,7 +7,7 @@ export const LOCATION_CHANGE = 'LOCATION_CHANGE';
 // Actions
 // ------------------------------------
 export function locationChange (location = '/') {
-    console.log(location)
+
   return {
         type    : LOCATION_CHANGE,
         payload : location

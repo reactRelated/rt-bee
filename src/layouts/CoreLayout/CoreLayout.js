@@ -1,7 +1,6 @@
 import React from 'react'
-import Header from '../../components/Header'
-/*import './CoreLayout.scss'
-'*/
+// import Header from '../../components/Header'
+import MainLayout from './MainLayout'
 import '../../styles/core.css';
 export const CoreLayout= ({ children }) => {
 
@@ -10,11 +9,13 @@ export const CoreLayout= ({ children }) => {
         case "/signin":
             return  <div className='door-container'>
                 {children}
-            </div>
+            </div>;
           break;
         default:
-            return  <div className='container'>
-                {children}
+            return  <div id="main-container" className='container'>
+                <MainLayout>
+                    {children}
+                </MainLayout>
             </div>
     }
 };
