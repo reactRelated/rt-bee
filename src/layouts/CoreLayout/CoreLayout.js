@@ -13,7 +13,7 @@ export const CoreLayout= ({ children }) => {
           break;
         default:
             return  <div id="main-container" className='container'>
-                <MainLayout>
+                <MainLayout >
                     {children}
                 </MainLayout>
             </div>
