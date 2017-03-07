@@ -18,7 +18,7 @@ class NormalLoginForm extends React.Component {
                 this.props.actions.handleSubmit(values,function () {
                     browserHistory.push({
                         pathname: '/',
-                        state: { fromDashboard: true }
+                        state: { username: 'bee' }
                     })
                 })
             }

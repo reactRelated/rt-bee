@@ -1,18 +1,24 @@
 import React from 'react'
+import { connect, } from 'react-redux'
 import { Layout, Menu, Icon ,Breadcrumb ,Affix} from 'antd';
 const { SubMenu } = Menu;
 const { Header, Sider, Content ,Footer} = Layout;
-import './MainLayout.css';
 
-export default class SiderDemo extends React.Component {
-    constructor(props) {
+import './MainLayout.css';
+import {layoutResize} from '../../store/coreLayout'
+
+class SiderDemo extends React.Component {
+  /*  constructor(props) {
         super(props);
-        this.state = {LayoutResize: document.documentElement.clientHeight};
-    }
+        this.state = {Layout:{LayoutResize: document.documentElement.clientHeight}} ;
+        // this.state =  {LayoutResize: document.documentElement.clientHeight};
+    }*/
 
     componentDidMount=()=>{
         window.onresize=function () {
-            this.setState({LayoutResize: document.documentElement.clientHeight});
+            console.log(this)
+            this.props.layoutResize(document.documentElement.clientHeight)
+            // this.setState({LayoutResize: document.documentElement.clientHeight});
         }.bind(this);
     };
     render() {
@@ -22,7 +28,7 @@ export default class SiderDemo extends React.Component {
 
 
         return (
-            <Layout  style={{ minHeight:this.state.LayoutResize}}>
+            <Layout  style={{ minHeight:this.props.Layout.LayoutResize}}>
                 <Header className="header">
                     <div className="logo" />
                     <Menu
@@ -85,3 +91,14 @@ export default class SiderDemo extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    console.log(state)
+    return state
+};
+
+//合并 Action
+const mapDispatchToProps = dispatch => ({
+    layoutResize: layoutResize
+});
+export default connect(mapStateToProps, mapDispatchToProps)(SiderDemo)

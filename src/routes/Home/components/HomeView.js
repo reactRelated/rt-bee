@@ -4,7 +4,7 @@ import {Link} from 'react-router'
 // import './HomeView.scss'
 
 export const HomeView = () => (
-  <div style={{ height:1200}}>
+  <div >
     <h4>Welcome!</h4>
     <img
       alt='This is a duck, because Redux!'

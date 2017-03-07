@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux'
 import locationReducer from './location'
+import layoutResizeReducer from './coreLayout'
 // ======================================================
 // 合并 Reducer
 // ======================================================
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
     location: locationReducer,
+      layoutResize:layoutResizeReducer,
     ...asyncReducers
   })
 }

@@ -7,7 +7,15 @@ import 'antd/dist/antd.css';
 // ========================================================
 // Store  实例化
 // ========================================================
-const initialState = window.___INITIAL_STATE__
+let initialState = window.___INITIAL_STATE__ || {}
+//默认树
+/*let defaultState ={
+    layout:{
+        layoutResize:document.documentElement.clientHeight
+    }
+};
+initialState =  Object.assign({},initialState,defaultState);*/
+console.log(initialState)
 const store = createStore(initialState)
 
 // ========================================================
