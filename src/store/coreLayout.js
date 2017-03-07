@@ -7,11 +7,11 @@ export const CORELAYOUT_RESIZE = 'CORELAYOUT_RESIZE';
 // Actions
 // ------------------------------------
 
-export function layoutResize (resize = document.documentElement.clientHeight) {
-
+export function layoutResize (minheight = document.documentElement.clientHeight) {
+    console.log(minheight)
     return {
         type  : CORELAYOUT_RESIZE,
-        resize : resize
+        minheight : minheight
     }
 }
 
@@ -19,12 +19,14 @@ export function layoutResize (resize = document.documentElement.clientHeight) {
 // Reducer
 // ------------------------------------
 const initialState = {
-    resize: document.documentElement.clientHeight
+    minheight: document.documentElement.clientHeight
 };
-export default function layoutResizeReducer (state = initialState, action) {
+export default function layoutReducer (state = initialState, action) {
     console.log(state);
     console.log(action);
     return action.type === CORELAYOUT_RESIZE
-        ? action.resize
+        ? Object.assign({},state,{
+            minheight:action.minheight
+        })
         : state
 }

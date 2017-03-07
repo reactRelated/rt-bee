@@ -1,4 +1,5 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
 import { connect, } from 'react-redux'
 import { Layout, Menu, Icon ,Breadcrumb ,Affix} from 'antd';
 const { SubMenu } = Menu;
@@ -8,17 +9,15 @@ import './MainLayout.css';
 import {layoutResize} from '../../store/coreLayout'
 
 class SiderDemo extends React.Component {
-  /*  constructor(props) {
+    constructor(props) {
         super(props);
-        this.state = {Layout:{LayoutResize: document.documentElement.clientHeight}} ;
+        this.state = {a:2} ;
         // this.state =  {LayoutResize: document.documentElement.clientHeight};
-    }*/
+    }
 
     componentDidMount=()=>{
         window.onresize=function () {
-            console.log(this)
-            this.props.layoutResize(document.documentElement.clientHeight)
-            // this.setState({LayoutResize: document.documentElement.clientHeight});
+            this.props.actions.layoutResize(document.documentElement.clientHeight)
         }.bind(this);
     };
     render() {
@@ -28,7 +27,8 @@ class SiderDemo extends React.Component {
 
 
         return (
-            <Layout  style={{ minHeight:this.props.Layout.LayoutResize}}>
+            <Layout  style={{ minHeight:this.props.layout.minheight}}>
+                {console.log(this)}
                 <Header className="header">
                     <div className="logo" />
                     <Menu
@@ -99,6 +99,9 @@ const mapStateToProps = (state) => {
 
 //合并 Action
 const mapDispatchToProps = dispatch => ({
-    layoutResize: layoutResize
+    actions: bindActionCreators({
+        layoutResize
+    }, dispatch)
+
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SiderDemo)
