@@ -1,4 +1,4 @@
-import React,{ Component} from 'react'
+import React,{ Component ,Children} from 'react'
 import { connect, } from 'react-redux'
 import { Form, Select, Input, Button } from 'antd';
 const FormItem = Form.Item;
@@ -13,12 +13,10 @@ class AddArticleForm extends Component {
             }
         });
     }
-    handleSelectChange = (value) => {
-        console.log(value);
-        this.props.form.setFieldsValue({
-            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
-        });
-    }
+
+    componentDidMount=()=>{
+       this.actions.selectArticleClassify()
+    };
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
@@ -44,8 +42,7 @@ class AddArticleForm extends Component {
                         onChange: this.handleSelectChange,
                     })(
                         <Select placeholder="选择文章分类">
-                            <Option value="male">male</Option>
-                            <Option value="female">female</Option>
+
                         </Select>
                     )}
                 </FormItem>

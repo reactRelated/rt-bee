@@ -16,7 +16,7 @@ export function  addArticlePost(data={}) {
     return ant;
 }
 
-export function  selectArticleTypePost(data={}) {
+export function  selectArticleClassifyPost(data={}) {
 
     let ant = Object.assign({ type : SELECTARTICLE_POST },data);
     return ant;
@@ -41,17 +41,17 @@ export function  addArticleSubmit(values,cb) {
     }
 }
 
-export function selectArticleType(){
+export function selectArticleClassify(){
     return (dispatch,getSeate )=> {
-        dispatch(selectArticleTypePost());
+        dispatch(selectArticleClassifyPost());
         return fetchMethods.Post({
-            url:`${__SERVER_HOST__}/AdminApi/AddArticle`,
+            url:`${__SERVER_HOST__}/AdminApi/selectArticleClassify`,
             body:{ },
             success: (res) => {
-                dispatch(selectArticleTypePost({status:'success'},res));
+                dispatch(selectArticleClassifyPost({status:'success'},res));
             },
             error: (ex) => {
-                return dispatch(selectArticleTypePost({
+                return dispatch(selectArticleClassifyPost({
                     status: 'error'
                 },ex));
             }
@@ -61,7 +61,7 @@ export function selectArticleType(){
 
 export const actions = {
     addArticleSubmit,
-    selectArticleType
+    selectArticleClassify
 };
 
 // ------------------------------------
