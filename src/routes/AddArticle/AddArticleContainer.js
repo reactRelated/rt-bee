@@ -1,24 +1,40 @@
 import React,{ Component ,Children} from 'react'
+import { bindActionCreators } from 'redux'
 import { connect, } from 'react-redux'
+import {actions} from './AddArticleModule'
+
 import { Form, Select, Input, Button } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class AddArticleForm extends Component {
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
+    constructor(props) {
+        super(props);
+        this.state = {
+            classify:[
+                {classify_id:"798cc20b0de725039ce946a8adb42e8c", classifyname:"javascript"}
+            ]
+        };
     }
 
     componentDidMount=()=>{
-       this.actions.selectArticleClassify()
+        this.props.actions.selectArticleClassify()
     };
+    shouldComponentUpdate =(nextProps)=>{
+        console.log(nextProps)
+        console.log(this.props)
+
+        return nextProps.id !== this.props.id;
+    };
+    handleSelectChange = (value) => {
+        console.log(value);
+        this.props.form.setFieldsValue({
+            title: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
+        });
+    }
     render() {
         const { getFieldDecorator } = this.props.form;
+        console.log(this)
         return (
             <Form onSubmit={this.handleSubmit}>
                 <FormItem
@@ -37,12 +53,13 @@ class AddArticleForm extends Component {
                     labelCol={{ span: 2 }}
                     wrapperCol={{ span: 10 }}
                 >
-                    {getFieldDecorator('type', {
+                    {getFieldDecorator('select', {
                         rules: [{ required: true, message: '请选择分类!' }],
                         onChange: this.handleSelectChange,
                     })(
-                        <Select placeholder="选择文章分类">
-
+                        <Select  placeholder="选择文章分类">
+                            <Option value="male">male</Option>
+                            <Option value="female">female</Option>
                         </Select>
                     )}
                 </FormItem>
@@ -60,7 +77,7 @@ class AddArticleForm extends Component {
                 <FormItem
                     wrapperCol={{
                         xs: { span: 8, offset: 0 },
-                        sm: { span: 8, offset: 4 },
+                        sm: { span: 8, offset: 2 },
                     }}
                 >
                     <Button type="primary" htmlType="submit">
@@ -74,9 +91,15 @@ class AddArticleForm extends Component {
 
 const AddArticle = Form.create()(AddArticleForm);
 
-//合并 Action
+const mapStateToProps = (state) => {
+    console.log(state)
+   return {
+       classify:state.AddArticle
+   }
+};
+
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(actions, dispatch)
 });
-export default connect()(AddArticle)
+export default connect(mapStateToProps,mapDispatchToProps)(AddArticle)
 

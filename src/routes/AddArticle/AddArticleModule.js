@@ -42,13 +42,13 @@ export function  addArticleSubmit(values,cb) {
 }
 
 export function selectArticleClassify(){
-    return (dispatch,getSeate )=> {
+    return (dispatch)=> {
         dispatch(selectArticleClassifyPost());
         return fetchMethods.Post({
             url:`${__SERVER_HOST__}/AdminApi/selectArticleClassify`,
             body:{ },
             success: (res) => {
-                dispatch(selectArticleClassifyPost({status:'success'},res));
+              return  dispatch(selectArticleClassifyPost({status:'success',data:res.data}))
             },
             error: (ex) => {
                 return dispatch(selectArticleClassifyPost({
@@ -77,6 +77,7 @@ const initialState = {
 };
 
 export default function addArticleReducer (state = initialState , action) {
+    console.log(action)
     switch(action.type){
         case ADDARTICLE_POST:
             if(action.status == 'success'){
@@ -99,11 +100,9 @@ export default function addArticleReducer (state = initialState , action) {
             }
         case SELECTARTICLE_POST:
             if(action.status == 'success'){
-
-                state = Object.assign({},state,{
+                state = Object.assign({},action.data,{
                     isFetching: false
                 });
-
                 return state
             }else if(action.status == 'error') {
                 state = Object.assign({},state,{

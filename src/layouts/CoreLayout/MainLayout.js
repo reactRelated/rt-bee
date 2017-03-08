@@ -21,13 +21,10 @@ export default class SiderDemo extends React.Component {
         }.bind(this);
     };
     render() {
-        console.log(this)
         const { layoutMinHeight } = this.state;
-        const { layout } = this.props;
-
+        const { layout,children } = this.props;
         return (
             <Layout  style={{ minHeight:layoutMinHeight}}>
-                {console.log(this)}
                 <Header className="header">
                     <div className="logo" />
                     <Menu
@@ -78,7 +75,7 @@ export default class SiderDemo extends React.Component {
                             <Breadcrumb.Item>App</Breadcrumb.Item>
                         </Breadcrumb>
                         <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
-                            {this.props.children}
+                            {children}
                         </Content>
                         <Footer style={{ textAlign: 'center' }}>
                             Ant Design ©2017 https://github.com/VanquisherMe Bee by Ant UED
