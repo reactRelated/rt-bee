@@ -1,4 +1,4 @@
-import {fetchMethods} from '../../../tools/networkFetch'
+import {fetchMethods} from '../../tools/networkFetch'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -38,7 +38,8 @@ export function  signInPost(data={}) {
 }*/
 
 export function  handleSubmit(values,cb) {
-    return dispatch => {
+    return (dispatch,getSeate )=> {
+        console.log(getSeate())
         dispatch(signInPost());
         return fetchMethods.Post({
             url:`${__SERVER_HOST__}/AdminApi/SignIn`,

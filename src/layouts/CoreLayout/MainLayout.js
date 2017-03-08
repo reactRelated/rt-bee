@@ -1,33 +1,32 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
-import { connect, } from 'react-redux'
+import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
+
 import { Layout, Menu, Icon ,Breadcrumb ,Affix} from 'antd';
 const { SubMenu } = Menu;
 const { Header, Sider, Content ,Footer} = Layout;
 
 import './MainLayout.css';
-import {layoutResize} from '../../store/coreLayout'
 
-class SiderDemo extends React.Component {
+export default class SiderDemo extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {a:2} ;
-        // this.state =  {LayoutResize: document.documentElement.clientHeight};
+        this.state =  {layoutMinHeight: document.documentElement.clientHeight};
     }
 
     componentDidMount=()=>{
         window.onresize=function () {
-            this.props.actions.layoutResize(document.documentElement.clientHeight)
+            this.setState({layoutMinHeight: document.documentElement.clientHeight});
         }.bind(this);
     };
     render() {
-
-        // let _LayoutResize = this.state.LayoutResize;
         console.log(this)
-
+        const { layoutMinHeight } = this.state;
+        const { layout } = this.props;
 
         return (
-            <Layout  style={{ minHeight:this.props.layout.minheight}}>
+            <Layout  style={{ minHeight:layoutMinHeight}}>
                 {console.log(this)}
                 <Header className="header">
                     <div className="logo" />
@@ -45,30 +44,29 @@ class SiderDemo extends React.Component {
                 <Layout>
                         <Sider width={200} style={{ background: '#fff' }}>
                             <Affix >
-                                <Menu
+                            <Menu
                                 mode="inline"
                                 defaultSelectedKeys={['1']}
                                 defaultOpenKeys={['sub1']}
                                 style={{ height: '100%' }}
+                                onClick={function (item) {
+
+                                    browserHistory.push(item.key)
+                                }}
                             >
-                                <SubMenu key="sub1" title={<span><Icon type="user" />subnav 1</span>}>
-                                    <Menu.Item key="1">option1</Menu.Item>
-                                    <Menu.Item key="2">option2</Menu.Item>
-                                    <Menu.Item key="3">option3</Menu.Item>
-                                    <Menu.Item key="4">option4</Menu.Item>
+                                    <Menu.Item key="9">首页</Menu.Item>
+                                <SubMenu key="sub1" title={<span><Icon type="laptop" />文章管理</span>} >
+                                    <Menu.Item key="/AddArticle" >文章添加</Menu.Item>
+                                    <Menu.Item key="/articleList" >文章列表</Menu.Item>
+                                    <Menu.Item key="/addType" >添加分类</Menu.Item>
                                 </SubMenu>
-                                <SubMenu key="sub2" title={<span><Icon type="laptop" />subnav 2</span>}>
+                                <SubMenu key="sub2" title={<span><Icon type="user" />个人中心</span>}>
                                     <Menu.Item key="5">option5</Menu.Item>
                                     <Menu.Item key="6">option6</Menu.Item>
                                     <Menu.Item key="7">option7</Menu.Item>
                                     <Menu.Item key="8">option8</Menu.Item>
                                 </SubMenu>
-                                <SubMenu key="sub3" title={<span><Icon type="notification" />subnav 3</span>}>
-                                    <Menu.Item key="9">option9</Menu.Item>
-                                    <Menu.Item key="10">option10</Menu.Item>
-                                    <Menu.Item key="11">option11</Menu.Item>
-                                    <Menu.Item key="12">option12</Menu.Item>
-                                </SubMenu>
+
                             </Menu>
                             </Affix>
                         </Sider>
@@ -92,16 +90,4 @@ class SiderDemo extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    console.log(state)
-    return state
-};
 
-//合并 Action
-const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators({
-        layoutResize
-    }, dispatch)
-
-});
-export default connect(mapStateToProps, mapDispatchToProps)(SiderDemo)

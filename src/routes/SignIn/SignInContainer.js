@@ -2,14 +2,14 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { browserHistory } from 'react-router'
 import { connect, } from 'react-redux'
-import {actions} from '../modules/signin'
+import {actions} from './SignInModule'
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 const FormItem = Form.Item;
 
 import './SigninContainer.css'
 
 
-class NormalLoginForm extends React.Component {
+class LoginForm extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this)
@@ -63,7 +63,7 @@ class NormalLoginForm extends React.Component {
     }
 }
 
-const Signin = Form.create()(NormalLoginForm);
+const Signin = Form.create()(LoginForm);
 
 
 const mapStateToProps = (state) => ({
