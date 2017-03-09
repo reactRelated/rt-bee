@@ -8,76 +8,72 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 
 class AddArticleForm extends Component {
-    constructor(props) {
+    /*constructor(props) {
         super(props);
         this.state = {
-            classify:[
-                {classify_id:"798cc20b0de725039ce946a8adb42e8c", classifyname:"javascript"}
-            ]
+            classify:[]
         };
+    }*/
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
+    }
+    handleSelectChange = (value) => {
+        console.log(value);
+        console.log(this.props.classify)
+
+    }
+    options =() =>{
+       /* console.log(this.props.classify)
+        this.state.classify.map(d => {
+            console.log(d)
+        });*/
+
+        return  <Option value="male">male</Option>
     }
 
     componentDidMount=()=>{
         this.props.actions.selectArticleClassify()
     };
-    shouldComponentUpdate =(nextProps)=>{
-        console.log(nextProps)
-        console.log(this.props)
-
-        return nextProps.id !== this.props.id;
-    };
-    handleSelectChange = (value) => {
-        console.log(value);
-        this.props.form.setFieldsValue({
-            title: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
-        });
-    }
     render() {
         const { getFieldDecorator } = this.props.form;
-        console.log(this)
         return (
             <Form onSubmit={this.handleSubmit}>
                 <FormItem
-                    label="标题"
+                    label="Note"
                     labelCol={{ span: 2 }}
-                    wrapperCol={{ span: 10 }}
+                    wrapperCol={{ span: 8 }}
                 >
-                    {getFieldDecorator('title', {
+                    {getFieldDecorator('note', {
                         rules: [{ required: true, message: '请填写标题!' }],
                     })(
                         <Input />
                     )}
                 </FormItem>
                 <FormItem
-                    label="分类"
+                    label="Gender"
                     labelCol={{ span: 2 }}
-                    wrapperCol={{ span: 10 }}
+                    wrapperCol={{ span: 8 }}
                 >
-                    {getFieldDecorator('select', {
-                        rules: [{ required: true, message: '请选择分类!' }],
+                    {getFieldDecorator('gender', {
+                        rules: [{ required: true, message: '请填写分类!' }],
                         onChange: this.handleSelectChange,
                     })(
-                        <Select  placeholder="选择文章分类">
-                            <Option value="male">male</Option>
-                            <Option value="female">female</Option>
+                        <Select placeholder="选择分类">
+                            {this.options()}
+                           {/* <Option value="male">male</Option>
+                            <Option value="female">female</Option>*/}
                         </Select>
-                    )}
-                </FormItem>
-                <FormItem
-                    label="内容"
-                    labelCol={{ span: 2 }}
-                    wrapperCol={{ span: 10 }}
-                >
-                    {getFieldDecorator('content', {
-                        rules: [{ required: true, message: '请填写内容!' }],
-                    })(
-                        <Input type="textarea" rows={4} />
                     )}
                 </FormItem>
                 <FormItem
                     wrapperCol={{
                         xs: { span: 8, offset: 0 },
-                        sm: { span: 8, offset: 2 },
+                        sm: { span: 8, offset: 4 },
                     }}
                 >
                     <Button type="primary" htmlType="submit">
@@ -94,9 +90,12 @@ const AddArticle = Form.create()(AddArticleForm);
 const mapStateToProps = (state) => {
     console.log(state)
    return {
-       classify:state.AddArticle
+
    }
 };
+
+
+
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(actions, dispatch)

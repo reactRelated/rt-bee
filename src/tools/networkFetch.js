@@ -1,4 +1,8 @@
 import fetch from 'isomorphic-fetch';
+export const AJAX_START = 'AJAX_START'
+export const AJAX_SUCCESS = 'AJAX_SUCCESS'
+export const AJAX_ERROR = 'AJAX_ERROR'
+
 /**
  * 获取对象原型下的类名
  * @param obj   被获取的对象

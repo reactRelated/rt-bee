@@ -1,4 +1,4 @@
-import {fetchMethods} from '../../tools/networkFetch'
+import {fetchMethods,AJAX_START,AJAX_SUCCESS,AJAX_ERROR} from '../../tools/networkFetch'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -16,10 +16,17 @@ export function  addArticlePost(data={}) {
     return ant;
 }
 
-export function  selectArticleClassifyPost(data={}) {
+export function  selectArticleClassifyPost(classify={}) {
 
-    let ant = Object.assign({ type : SELECTARTICLE_POST },data);
-    return ant;
+    /*let ant = Object.assign({
+        type : SELECTARTICLE_POST,
+        isFetching: false,
+        Classify:[]
+    },data);*/
+    return {
+        type : SELECTARTICLE_POST,
+        classify
+    }
 }
 
 export function  addArticleSubmit(values,cb) {
@@ -31,6 +38,7 @@ export function  addArticleSubmit(values,cb) {
             body:{ },
             success: (res) => {
                 dispatch(addArticlePost({status:'success'},res));
+                cb(res)
             },
             error: (ex) => {
                 return dispatch(addArticlePost({
@@ -43,16 +51,16 @@ export function  addArticleSubmit(values,cb) {
 
 export function selectArticleClassify(){
     return (dispatch)=> {
-        dispatch(selectArticleClassifyPost());
+        dispatch(selectArticleClassifyPost({status:AJAX_START}));
         return fetchMethods.Post({
             url:`${__SERVER_HOST__}/AdminApi/selectArticleClassify`,
             body:{ },
             success: (res) => {
-              return  dispatch(selectArticleClassifyPost({status:'success',data:res.data}))
+              return  dispatch(selectArticleClassifyPost({status:AJAX_SUCCESS,items:res.data}))
             },
             error: (ex) => {
                 return dispatch(selectArticleClassifyPost({
-                    status: 'error'
+                    status: AJAX_ERROR
                 },ex));
             }
         })
@@ -67,17 +75,33 @@ export const actions = {
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
+export function selectArticlePostHandler (state = {
+        isFetching: false,
+        items:[]},action){
+            switch (action.status){
+                case AJAX_START:
+                    return Object.assign({}, state, {
+                        isFetching: true,
+                    });
+                case AJAX_SUCCESS:
+                    return Object.assign({}, state, {
+                        isFetching: false,
+                        items:action.items
+                    });
+                case AJAX_ERROR:
+                    return Object.assign({}, state, {
+                        isFetching: false,
+                    })
+            }
 
+    }
 // ------------------------------------
 // Reducer
 // ------------------------------------
 
-const initialState = {
-    isFetching: false
-};
+const initialState = {};
 
 export default function addArticleReducer (state = initialState , action) {
-    console.log(action)
     switch(action.type){
         case ADDARTICLE_POST:
             if(action.status == 'success'){
@@ -99,22 +123,7 @@ export default function addArticleReducer (state = initialState , action) {
                 return state
             }
         case SELECTARTICLE_POST:
-            if(action.status == 'success'){
-                state = Object.assign({},action.data,{
-                    isFetching: false
-                });
-                return state
-            }else if(action.status == 'error') {
-                state = Object.assign({},state,{
-                    isFetching: false
-                });
-                return state
-            }else {
-                state = Object.assign({},state,{
-                    isFetching: true
-                });
-                return state
-            }
+            return Object.assign({},state, {"classify":selectArticlePostHandler(state['classify'],action.classify)})
         default:
             return state
     }
