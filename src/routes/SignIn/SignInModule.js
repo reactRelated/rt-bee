@@ -1,4 +1,4 @@
-import {fetchMethods} from '../../tools/networkFetch'
+import {fetchMethods,AJAX_START,AJAX_SUCCESS,AJAX_ERROR} from '../../tools/networkFetch'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -9,38 +9,19 @@ export const SIGNIN_POST = 'SIGNIN_POST'; //登录请求
 // Actions
 // ------------------------------------
 
-export function  signInPost(data={}) {
+export function  signInPost(user={}) {
 
-   let ant = Object.assign({ type : SIGNIN_POST },data);
-    return ant;
+    return {
+        type : SIGNIN_POST,
+        user
+    };
 }
-/*export function  handleSubmit(values) {
-    console.log('Received values of form OK: ', values);
-    return dispatch => {
-        dispatch(signInPost());
-        return fetch(`${__SERVER_HOST__}/AdminApi/SignIn`,{
-            method:'POST',
-            credentials: 'include',
-            headers: {
-                'cookie':'XDEBUG_SESSION=PHPSTORM',
-                'content-type':'application/x-www-form-urlencoded'
-            },
-            body:queryString.stringify({
-                username:values.username,
-                password:values.password
-            })
-        }).then(response => response.json())
-            .then(json => dispatch(signInPost({status:'success'},json)))
-            .catch(json => dispatch(signInPost({
-                status: 'error'
-            },json)))
-    }
-}*/
 
-export function  handleSubmit(values,cb) {
+
+export function  handleSubmit(values,scb,ecb) {
     return (dispatch,getSeate )=> {
         console.log(getSeate())
-        dispatch(signInPost());
+        dispatch(signInPost({status:AJAX_START}));
         return fetchMethods.Post({
             url:`${__SERVER_HOST__}/AdminApi/SignIn`,
             body:{
@@ -49,15 +30,12 @@ export function  handleSubmit(values,cb) {
             },
             success: (res) => {
                 console.log(res)
-
-                dispatch(signInPost({status:'success'},res));
-                cb();
+                dispatch(signInPost({status:AJAX_SUCCESS,info:res.data}));
+                scb(res);
             },
             error: (ex) => {
-                console.log(ex)
-                return dispatch(signInPost({
-                    status: 'error'
-                },ex));
+                dispatch(signInPost({ status: AJAX_ERROR},ex));
+                ecb(ex)
             }
         })
     }
@@ -71,39 +49,40 @@ export const actions = {
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
+export function signInPostHandler (state = {
+    isFetching: false,
+    info:{}
+    },action){
+    console.log(action)
+    switch (action.status){
+        case AJAX_START:
+            return Object.assign({}, state, {
+                isFetching: true,
+            });
+        case AJAX_SUCCESS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                info:action.info
+
+            });
+        case AJAX_ERROR:
+            return Object.assign({}, state, {
+                isFetching: false,
+                msg:action.msg
+            })
+    }
+
+}
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 
-const initialState = {
-    isFetching: false
-};
-
-export default function signInReducer (state = initialState , action) {
+export default function signInReducer (state = {} , action) {
+    console.log(action)
     switch(action.type){
         case SIGNIN_POST:
-              if(action.status == 'success'){
-                  console.log('成功请求')
-                  state = Object.assign({},state,{
-                      isFetching: false
-                  });
-
-                  return state
-              }else if(action.status == 'error') {
-                  console.log('请求失败')
-                  state = Object.assign({},state,{
-                      isFetching: false
-                  });
-                  return state
-              }else {
-                  console.log('请求开始')
-                  state = Object.assign({},state,{
-                      isFetching: true
-                  });
-                  return state
-              }
-            return state;
+            return Object.assign({},state,{user:signInPostHandler(state['user'],action.user)})
         default:
             return state
     }

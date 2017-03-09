@@ -52,7 +52,7 @@ export const fetchMethods = ({
         fetch(opts.url, {
             ...httpDefault,
             "method": "POST",
-            "body": JSON.stringify(opts.body)
+            "body": JSON.stringify(opts.body) || {}
         }).then((res) => {
             return res.json();
         }).then((res) => {

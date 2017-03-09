@@ -5,7 +5,7 @@ import {actions} from './AddArticleModule'
 
 import SelectClassify from './ClassifyOptionComponet'
 
-import { Form, Select, Input, Button } from 'antd';
+import { Form, Select, Input, Button ,message} from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -14,9 +14,9 @@ class AddArticleForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
+            if (!err)  this.props.actions.addArticleSubmit(values,
+                msg=>message.success(msg)
+            )
         });
     }
     handleSelectChange = (value) => {
@@ -38,22 +38,22 @@ class AddArticleForm extends Component {
         return (
             <Form onSubmit={this.handleSubmit}>
                 <FormItem
-                    label="Note"
+                    label="标题"
                     labelCol={{ span: 2 }}
                     wrapperCol={{ span: 8 }}
                 >
-                    {getFieldDecorator('note', {
+                    {getFieldDecorator('title', {
                         rules: [{ required: true, message: '请填写标题!' }],
                     })(
                         <Input />
                     )}
                 </FormItem>
                 <FormItem
-                    label="Gender"
+                    label="文章类别"
                     labelCol={{ span: 2 }}
                     wrapperCol={{ span: 8 }}
                 >
-                    {getFieldDecorator('gender', {
+                    {getFieldDecorator('classify', {
                         rules: [{ required: true, message: '请填写分类!' }],
                         onChange: this.handleSelectChange,
                     })(
@@ -62,10 +62,23 @@ class AddArticleForm extends Component {
                         </Select>
                     )}
                 </FormItem>
+
+                <FormItem
+                    label="内容"
+                    labelCol={{ span: 2 }}
+                    wrapperCol={{ span: 8 }}
+                >
+                    {getFieldDecorator('info', {
+                        rules: [{ required: true, message: '请填写文章内容!' }],
+                    })(
+                        <Input type="textarea" placeholder="文章内容" autosize={{ minRows: 2, maxRows: 6 }} />
+                    )}
+                </FormItem>
+
                 <FormItem
                     wrapperCol={{
                         xs: { span: 8, offset: 0 },
-                        sm: { span: 8, offset: 4 },
+                        sm: { span: 8, offset: 2 },
                     }}
                 >
                     <Button type="primary" htmlType="submit">
