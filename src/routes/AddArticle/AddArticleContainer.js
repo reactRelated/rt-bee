@@ -3,17 +3,14 @@ import { bindActionCreators } from 'redux'
 import { connect, } from 'react-redux'
 import {actions} from './AddArticleModule'
 
+import SelectClassify from './ClassifyOptionComponet'
+
 import { Form, Select, Input, Button } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class AddArticleForm extends Component {
-    /*constructor(props) {
-        super(props);
-        this.state = {
-            classify:[]
-        };
-    }*/
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -27,20 +24,17 @@ class AddArticleForm extends Component {
         console.log(this.props.classify)
 
     }
-    options =() =>{
-       /* console.log(this.props.classify)
-        this.state.classify.map(d => {
-            console.log(d)
-        });*/
 
-        return  <Option value="male">male</Option>
-    }
-
-    componentDidMount=()=>{
+    componentWillMount=()=>{
         this.props.actions.selectArticleClassify()
     };
+
     render() {
+
+        console.log(this)
         const { getFieldDecorator } = this.props.form;
+        const { classify } = this.props;
+        const  options = classify.items.map(d => <Option key={d.classify_id}>{d.classifyname}</Option>);
         return (
             <Form onSubmit={this.handleSubmit}>
                 <FormItem
@@ -64,9 +58,7 @@ class AddArticleForm extends Component {
                         onChange: this.handleSelectChange,
                     })(
                         <Select placeholder="选择分类">
-                            {this.options()}
-                           {/* <Option value="male">male</Option>
-                            <Option value="female">female</Option>*/}
+                            {options}
                         </Select>
                     )}
                 </FormItem>
@@ -89,11 +81,18 @@ const AddArticle = Form.create()(AddArticleForm);
 
 const mapStateToProps = (state) => {
     console.log(state)
+    const {
+        items: items
+    } = state['AddArticle']['classify'] || {
+        items:[]
+    };
+    console.log(items)
    return {
-
+       classify:{
+           items: items
+       }
    }
 };
-
 
 
 

@@ -29,7 +29,7 @@ export function  selectArticleClassifyPost(classify={}) {
     }
 }
 
-export function  addArticleSubmit(values,cb) {
+export function  addArticleSubmit(values) {
     console.log(values)
     return (dispatch,getSeate )=> {
         dispatch(addArticlePost());
@@ -56,7 +56,7 @@ export function selectArticleClassify(){
             url:`${__SERVER_HOST__}/AdminApi/selectArticleClassify`,
             body:{ },
             success: (res) => {
-              return  dispatch(selectArticleClassifyPost({status:AJAX_SUCCESS,items:res.data}))
+                dispatch(selectArticleClassifyPost({status:AJAX_SUCCESS,items:res.data}))
             },
             error: (ex) => {
                 return dispatch(selectArticleClassifyPost({
