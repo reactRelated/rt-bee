@@ -20,7 +20,7 @@ class LoginForm extends React.Component {
 
                     browserHistory.push({
                         pathname: '/',
-                        state: { username: 'bee' }
+                        state: { username: 'bee',a:1 }
                     })
                 },(res)=>{
                     message.error(res.msg);

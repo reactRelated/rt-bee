@@ -6,7 +6,7 @@ import {Link} from 'react-router'
 export const HomeView = () => (
   <div >
     <h4>Welcome!</h4>
-
+      {sessionStorage.getItem("@@History/nn7hbo")}
   </div>
 );
 

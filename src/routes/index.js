@@ -4,6 +4,8 @@ import Home from './Home'
 import SignInRoute from './SignIn'
 import AddArticleRoute from './AddArticle'
 import ArticleListRoute from './ArticleList'
+import AddClassifyRoute from './AddClassify'
+import ModifyPersonalRoute from './ModifyPersonal'
 
 /*  Note: 使用react-router PlainRoute 对象建立路由的定义。   */
 export const createRoutes = (store) => ({
@@ -13,7 +15,9 @@ export const createRoutes = (store) => ({
         childRoutes: [
             SignInRoute(store),
             AddArticleRoute(store),
-            ArticleListRoute(store)
+            ArticleListRoute(store),
+            AddClassifyRoute(store),
+            ModifyPersonalRoute(store)
         ]
     });
 

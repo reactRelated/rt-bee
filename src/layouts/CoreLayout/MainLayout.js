@@ -39,7 +39,7 @@ export default class SiderDemo extends React.Component {
                     </Menu>
                 </Header>
                 <Layout>
-                        <Sider width={200} style={{ background: '#fff' }}>
+                    <Sider width={200} style={{ background: '#fff' }}>
                             <Affix >
                             <Menu
                                 mode="inline"
@@ -48,7 +48,10 @@ export default class SiderDemo extends React.Component {
                                 style={{ height: '100%' }}
                                 onClick={function (item) {
 
-                                    browserHistory.push(item.key)
+                                    browserHistory.push({
+                                        pathname: item.key,
+                                        state: { path: item.key}
+                                    })
                                 }}
                             >
                                     <Menu.Item key="/">首页</Menu.Item>
@@ -58,16 +61,14 @@ export default class SiderDemo extends React.Component {
                                     <Menu.Item key="/AddClassify" >添加分类</Menu.Item>
                                 </SubMenu>
                                 <SubMenu key="sub2" title={<span><Icon type="user" />个人中心</span>}>
-                                    <Menu.Item key="5">option5</Menu.Item>
-                                    <Menu.Item key="6">option6</Menu.Item>
-                                    <Menu.Item key="7">option7</Menu.Item>
-                                    <Menu.Item key="8">option8</Menu.Item>
+                                    <Menu.Item key="/ModifyPersonal">设置个人资料</Menu.Item>
+                                    <Menu.Item key="/ResetPassword">修改密码</Menu.Item>
+
                                 </SubMenu>
 
                             </Menu>
                             </Affix>
                         </Sider>
-
                     <Layout style={{ padding: '0 24px 24px' }}>
                         <Breadcrumb style={{ margin: '12px 0' }}>
                             <Breadcrumb.Item>Home</Breadcrumb.Item>
