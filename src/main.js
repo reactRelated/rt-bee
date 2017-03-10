@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import createStore from './store/createStore'
 import { browserHistory, Router } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
 import AppContainer from './containers/AppContainer'
 import 'antd/dist/antd.css';
 
