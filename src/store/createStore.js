@@ -1,7 +1,6 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import { browserHistory } from 'react-router'
-import { routerMiddleware } from 'react-router-redux'
 import makeRootReducer from './reducers'
 import { updateLocation } from './location'
 import createLogger from 'redux-logger'
@@ -11,8 +10,7 @@ export default (initialState = {}) => {
   // ======================================================
   // 中间件配置
   // ======================================================
-    const rmiddleware = routerMiddleware(browserHistory)
-  const middleware = [thunk,rmiddleware,createLogger()]
+  const middleware = [thunk,createLogger()]
 
   // ======================================================
   // 存储 增强器 => 强化函数

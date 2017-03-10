@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux'
 import { connect, } from 'react-redux'
 import {actions} from './AddArticleModule'
 
-import SelectClassify from './ClassifyOptionComponet'
 
 import { Form, Select, Input, Button ,message} from 'antd';
 const FormItem = Form.Item;

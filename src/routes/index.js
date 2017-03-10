@@ -3,15 +3,17 @@ import CoreLayout from '../layouts/CoreLayout'
 import Home from './Home'
 import SignInRoute from './SignIn'
 import AddArticleRoute from './AddArticle'
-/*  Note: 使用react-router PlainRoute 对象建立路由的定义。   */
+import ArticleListRoute from './ArticleList'
 
+/*  Note: 使用react-router PlainRoute 对象建立路由的定义。   */
 export const createRoutes = (store) => ({
         path: '/',
         component: CoreLayout,
         indexRoute: Home,
         childRoutes: [
             SignInRoute(store),
-            AddArticleRoute(store)
+            AddArticleRoute(store),
+            ArticleListRoute(store)
         ]
     });
 

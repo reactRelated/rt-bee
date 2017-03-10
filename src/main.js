@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import createStore from './store/createStore'
-import { browserHistory, Router } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux'
 import AppContainer from './containers/AppContainer'
 import 'antd/dist/antd.css';
 
@@ -19,7 +17,6 @@ let initialState = window.___INITIAL_STATE__ || {}
 initialState =  Object.assign({},initialState,defaultState);*/
 console.log(initialState)
 const store = createStore(initialState)
-const history = syncHistoryWithStore(browserHistory, store)
 // ========================================================
 // Render Setup
 // ========================================================
@@ -29,7 +26,7 @@ let render = () => {
   const routes = require('./routes/index').default(store)
 
   ReactDOM.render(
-    <AppContainer store={store} routes={routes} history={history} />,
+    <AppContainer store={store} routes={routes}  />,
     MOUNT_NODE
   )
 };

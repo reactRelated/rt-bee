@@ -91,7 +91,8 @@ config.globals = {
   // '__COVERAGE__' : !argv.watch && config.env === 'test',
   '__BASENAME__' : JSON.stringify(process.env.BASENAME || ''),
     //当前ip地址端口
-    '__SERVER_HOST__': JSON.stringify(`http://${config.server_host}:${config.server_port}`)
+    // '__SERVER_HOST__': JSON.stringify(`http://${config.server_host}:${config.server_port}`)
+    '__SERVER_HOST__': JSON.stringify(`http://localhost:${config.server_port}`)
 }
 
 // ------------------------------------

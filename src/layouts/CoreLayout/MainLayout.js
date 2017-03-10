@@ -54,8 +54,8 @@ export default class SiderDemo extends React.Component {
                                     <Menu.Item key="/">首页</Menu.Item>
                                 <SubMenu key="sub1" title={<span><Icon type="laptop" />文章管理</span>} >
                                     <Menu.Item key="/AddArticle" >文章添加</Menu.Item>
-                                    <Menu.Item key="/articleList" >文章列表</Menu.Item>
-                                    <Menu.Item key="/addType" >添加分类</Menu.Item>
+                                    <Menu.Item key="/ArticleList" >文章列表</Menu.Item>
+                                    <Menu.Item key="/AddClassify" >添加分类</Menu.Item>
                                 </SubMenu>
                                 <SubMenu key="sub2" title={<span><Icon type="user" />个人中心</span>}>
                                     <Menu.Item key="5">option5</Menu.Item>
