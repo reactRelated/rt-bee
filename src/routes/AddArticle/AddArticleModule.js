@@ -10,39 +10,40 @@ export const SELECTARTICLE_POST = 'SELECTARTICLE_POST'; //请求文章分类
 // Actions
 // ------------------------------------
 
-export function  addArticlePost(data={}) {
+export function  addArticlePost(addSubmit={}) {
 
-    let ant = Object.assign({ type : ADDARTICLE_POST },data);
-    return ant;
+    return {
+        type : ADDARTICLE_POST,
+        addSubmit
+    }
 }
 
 export function  selectArticleClassifyPost(classify={}) {
 
-    /*let ant = Object.assign({
-        type : SELECTARTICLE_POST,
-        isFetching: false,
-        Classify:[]
-    },data);*/
     return {
         type : SELECTARTICLE_POST,
         classify
     }
 }
 
-export function  addArticleSubmit(values) {
+export function  addArticleSubmit(values,scb) {
     console.log(values)
-    return (dispatch,getSeate )=> {
-        dispatch(addArticlePost());
+    return dispatch=> {
+        dispatch(addArticlePost({status:AJAX_START}));
         return fetchMethods.Post({
             url:`${__SERVER_HOST__}/AdminApi/AddArticle`,
-            body:{ },
+            body:{
+                title:values.title,
+                info:values.info,
+                classify:values.classify
+            },
             success: (res) => {
-                dispatch(addArticlePost({status:'success'},res));
-                cb(res)
+                dispatch(addArticlePost({status:AJAX_SUCCESS,msg:res.msg}));
+                scb(res.msg)
             },
             error: (ex) => {
                 return dispatch(addArticlePost({
-                    status: 'error'
+                    status: AJAX_ERROR
                 },ex));
             }
         })
@@ -54,7 +55,6 @@ export function selectArticleClassify(){
         dispatch(selectArticleClassifyPost({status:AJAX_START}));
         return fetchMethods.Post({
             url:`${__SERVER_HOST__}/AdminApi/selectArticleClassify`,
-            body:{ },
             success: (res) => {
                 dispatch(selectArticleClassifyPost({status:AJAX_SUCCESS,items:res.data}))
             },
@@ -75,6 +75,8 @@ export const actions = {
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
+
+//请求文章分类
 export function selectArticlePostHandler (state = {
         isFetching: false,
         items:[]},action){
@@ -95,6 +97,29 @@ export function selectArticlePostHandler (state = {
             }
 
     }
+//添加文章
+export function addArticlePostHandler (state = {
+    isFetching: false},action){
+    switch (action.status){
+        case AJAX_START:
+            return Object.assign({}, state, {
+                isFetching: true,
+            });
+        case AJAX_SUCCESS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                msg:action.msg
+            });
+        case AJAX_ERROR:
+            return Object.assign({}, state, {
+                isFetching: false,
+                msg:action.msg
+            })
+    }
+
+}
+
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -104,24 +129,7 @@ const initialState = {};
 export default function addArticleReducer (state = initialState , action) {
     switch(action.type){
         case ADDARTICLE_POST:
-            if(action.status == 'success'){
-
-                state = Object.assign({},state,{
-                    isFetching: false
-                });
-
-                return state
-            }else if(action.status == 'error') {
-                state = Object.assign({},state,{
-                    isFetching: false
-                });
-                return state
-            }else {
-                state = Object.assign({},state,{
-                    isFetching: true
-                });
-                return state
-            }
+            return Object.assign({},state, {"addSubmit":addArticlePostHandler(state['addSubmit'],action.addSubmit)})
         case SELECTARTICLE_POST:
             return Object.assign({},state, {"classify":selectArticlePostHandler(state['classify'],action.classify)})
         default:

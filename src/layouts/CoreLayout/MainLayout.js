@@ -51,7 +51,7 @@ export default class SiderDemo extends React.Component {
                                     browserHistory.push(item.key)
                                 }}
                             >
-                                    <Menu.Item key="9">首页</Menu.Item>
+                                    <Menu.Item key="/">首页</Menu.Item>
                                 <SubMenu key="sub1" title={<span><Icon type="laptop" />文章管理</span>} >
                                     <Menu.Item key="/AddArticle" >文章添加</Menu.Item>
                                     <Menu.Item key="/articleList" >文章列表</Menu.Item>
