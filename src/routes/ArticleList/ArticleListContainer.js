@@ -6,7 +6,7 @@ const FormItem = Form.Item;
 import {actions} from './ArticleListModule'
 import  './ArticleListContainer.css';
 
-const columns = [{
+/*const columns = [{
     title: '标题',
     placeholder: '标题',
     dataIndex: 'title',
@@ -23,24 +23,18 @@ const columns = [{
     placeholder: '时间',
     dataIndex: 'updatetime',
 }];
-/*const data = [];
-for (let i = 0; i < 46; i++) {
-    data.push({
-        key: i,
-        name: `Edward King ${i}`,
-        age: 32,
-        address: `London, Park Lane no. ${i}`,
-    });
-}*/
+
 class QueryListForm extends Component {
 
-    /*constructor(props){
+    constructor(props){
         super(props)
-        this.state = {
-            expand: false,
+        this. state = {
+            selectedRowKeys: [],
+            expand: false
         };
-    }*/
-    state = {
+    }
+    /!*state = {
+        selectedRowKeys: [],
         expand: false,
         searchItem:[
             "标题",
@@ -48,7 +42,7 @@ class QueryListForm extends Component {
             "作者",
             "时间"
         ]
-    };
+    };*!/
     handleSearch = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -96,7 +90,7 @@ class QueryListForm extends Component {
         }
 
         const expand = this.state.expand;
-        const shownCount = expand ? children.length : 6;
+        const shownCount = expand ? children.length : 3;
 
 
         //Table
@@ -135,9 +129,7 @@ class QueryListForm extends Component {
         };
 
         const {queryList} = this.props;
-        console.log(queryList)
         const queryListData =[];
-
         queryList.items.map((d)=>{
             queryListData.push({
                 key:d.article_id,
@@ -158,12 +150,12 @@ class QueryListForm extends Component {
                     </Row>
                     <Row>
                         <Col span={24} style={{ textAlign: 'right' }}>
-                            <Button type="primary" htmlType="submit">Search</Button>
+                            <Button type="primary" htmlType="submit">搜索</Button>
                             <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
-                                Clear
+                                清空
                             </Button>
                             <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
-                                Collapse <Icon type={expand ? 'up' : 'down'} />
+                                高级搜索 <Icon type={expand ? 'up' : 'down'} />
                             </a>
                         </Col>
                     </Row>
@@ -175,105 +167,73 @@ class QueryListForm extends Component {
     }
 }
 
-const ArticleList = Form.create()(QueryListForm);
+const ArticleList = Form.create()(QueryListForm);*/
 
-/*class ArticleList extends Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            selectedRowKeys: [],  // Check here to configure the default column
-            items:[]
 
-        };
+const columns = [{
+    title: 'Name',
+    dataIndex: 'name',
+}, {
+    title: 'Age',
+    dataIndex: 'age',
+}, {
+    title: 'Address',
+    dataIndex: 'address',
+}];
+
+const data = [];
+for (let i = 0; i < 46; i++) {
+    data.push({
+        key: i,
+        name: `Edward King ${i}`,
+        age: 32,
+        address: `London, Park Lane no. ${i}`,
+    });
+}
+
+class ArticleList extends React.Component {
+    state = {
+        selectedRowKeys: [],  // Check here to configure the default column
+        loading: false,
+    };
+    start = () => {
+        this.setState({ loading: true });
+        // ajax request after empty completing
+        setTimeout(() => {
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+        }, 1000);
     }
-
-
     onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     }
-    componentWillMount=()=>{
-        this.props.actions.queryListArticle()
-    };
     render() {
-        //Table
-        const { selectedRowKeys } = this.state;
+        const { loading, selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-            selections: [{
-                key: 'odd',
-                text: 'Select Odd Row',
-                onSelect: (changableRowKeys) => {
-                    let newSelectedRowKeys = [];
-                    newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-                        if (index % 2 !== 0) {
-                            return false;
-                        }
-                        return true;
-                    });
-                    this.setState({ selectedRowKeys: newSelectedRowKeys });
-                },
-            }, {
-                key: 'even',
-                text: 'Select Even Row',
-                onSelect: (changableRowKeys) => {
-                    let newSelectedRowKeys = [];
-                    newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-                        if (index % 2 !== 0) {
-                            return true;
-                        }
-                        return false;
-                    });
-                    this.setState({ selectedRowKeys: newSelectedRowKeys });
-                },
-            }],
-            onSelection: this.onSelection,
         };
-
-        const {queryList} = this.props;
-        const queryListData =[];
-
-        queryList.items.map((d)=>{
-            queryListData.push({
-                key:d.article_id,
-                title:d.title,
-                classify:d.classify,
-                author:d.author,
-                updatetime:d.updatetime
-            })
-        });
-
+        const hasSelected = selectedRowKeys.length > 0;
         return (
             <div>
-                <QueryListForms />
-                <Table rowSelection={rowSelection} columns={columns} dataSource={queryListData} />
+                <div style={{ marginBottom: 16 }}>
+                    <Button type="primary" onClick={this.start}
+                            disabled={!hasSelected} loading={loading}
+                    >Reload</Button>
+                    <span style={{ marginLeft: 8 }}>{hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}</span>
+                </div>
+                <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
             </div>
-        )
+        );
     }
-}*/
-
-
-/*const mapStateToProps = (state) => {
-    console.log(state)
-    const {
-        items: items
-    } = state['ArticleList']['queryList'] || {
-        items:[]
-    };
-    console.log(items)
-    return {
-        queryList:{
-            items: items
-        }
-    }
-};
+}
 
 
 
-const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(actions, dispatch)
-});*/
+
 export default connect((state) => {
     console.log(state)
     const {
@@ -281,7 +241,6 @@ export default connect((state) => {
     } = state['ArticleList']['queryList'] || {
         items:[]
     };
-    console.log(items)
     return {
         queryList:{
             items: items

@@ -19,7 +19,13 @@ export function  queryListPost(queryList={}) {
 
 
 
-export function queryListArticle(body={}){
+export function queryListArticle(body={
+    title:"",
+    classify:"",
+    author:"",
+    updatetime:""
+}){
+    console.log(body)
     return (dispatch)=> {
         dispatch(queryListPost({status:AJAX_START}));
         return fetchMethods.Post({
