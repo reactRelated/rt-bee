@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
 import { updateLocation } from './location'
 import createLogger from 'redux-logger'
+import persistState from 'redux-sessionstorage'
 import DevTools from '../containers/DevTools'
 
 export default (initialState = {}) => {
@@ -15,7 +16,7 @@ export default (initialState = {}) => {
   // ======================================================
   // 存储 增强器 => 强化函数
   // ======================================================
-  const enhancers = []
+  const enhancers = [persistState()]
 
     //Redux 方法 compose() （译者注：compose(funcA, funcB, funcC) 形象为 compose(funcA(funcB(funcC())))）
   let composeEnhancers = compose;

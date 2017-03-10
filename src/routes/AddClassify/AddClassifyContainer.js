@@ -46,7 +46,7 @@ class AddClassifyForm extends Component {
                     }}
                 >
                     <Button type="primary" htmlType="submit">
-                        {this.props.location.pathname}
+                        提 交
                     </Button>
                 </FormItem>
             </Form>
