@@ -13,12 +13,12 @@ class AppContainer extends Component {
   }
 
   render () {
-    const { routes, store } = this.props;
+    const { routes, store ,history} = this.props;
 
     return (
       <Provider store={store}>
         <div>
-          <Router history={browserHistory}  routes={routes} />
+          <Router history={history}  routes={routes} />
           <DevTools />
         </div>
       </Provider>
