@@ -26,41 +26,38 @@ export function  modifyPersonalPost(modifyPersonal={}) {
     }
 }
 
-export function  personalDetails(values,scb) {
-    console.log(values)
+export function  personalDetails(values) {
     return dispatch=> {
-        dispatch(addArticlePost({status:AJAX_START}));
+        dispatch(personalDetailsPost({status:AJAX_START}));
         return fetchMethods.Post({
-            url:`${__SERVER_HOST__}/AdminApi/AddArticle`,
-            body:{
-                title:values.title,
-                info:values.info,
-                classify:values.classify
-            },
+            url:`${__SERVER_HOST__}/AdminApi/GetUserInfo`,
             success: (res) => {
-                dispatch(addArticlePost({status:AJAX_SUCCESS,msg:res.msg}));
-                scb(res.msg)
+                dispatch(personalDetailsPost({status:AJAX_SUCCESS,info:res.data}));
             },
             error: (ex) => {
-                return dispatch(addArticlePost({
+                return dispatch(personalDetailsPost({
                     status: AJAX_ERROR
                 },ex));
             }
         })
     }
 }
-export function modifyPersonalSubmit(){
+
+export function modifyPersonalSubmit(values,scb,ecb){
     return (dispatch)=> {
-        dispatch(selectArticleClassifyPost({status:AJAX_START}));
+        dispatch(modifyPersonalPost({status:AJAX_START}));
         return fetchMethods.Post({
-            url:`${__SERVER_HOST__}/AdminApi/selectArticleClassify`,
+            url:`${__SERVER_HOST__}/AdminApi/EditUserInfo`,
+            body:values,
             success: (res) => {
-                dispatch(selectArticleClassifyPost({status:AJAX_SUCCESS,items:res.data}))
+                dispatch(modifyPersonalPost({status:AJAX_SUCCESS}))
+                scb(res.msg)
             },
             error: (ex) => {
-                return dispatch(selectArticleClassifyPost({
+                 dispatch(modifyPersonalPost({
                     status: AJAX_ERROR
                 },ex));
+                ecb(res.msg)
             }
         })
     }
@@ -79,7 +76,7 @@ export const actions = {
 //查询个人信息
 export function personalDetailsPostHandler (state = {
     isFetching: false,
-    items:[]},action){
+    info:{}},action){
     switch (action.status){
         case AJAX_START:
             return Object.assign({}, state, {
@@ -88,7 +85,7 @@ export function personalDetailsPostHandler (state = {
         case AJAX_SUCCESS:
             return Object.assign({}, state, {
                 isFetching: false,
-                items:action.items
+                info:action.info
             });
         case AJAX_ERROR:
             return Object.assign({}, state, {

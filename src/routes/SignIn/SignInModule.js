@@ -20,7 +20,6 @@ export function  signInPost(user={}) {
 
 export function  handleSubmit(values,scb,ecb) {
     return (dispatch,getSeate )=> {
-        console.log(getSeate())
         dispatch(signInPost({status:AJAX_START}));
         return fetchMethods.Post({
             url:`${__SERVER_HOST__}/AdminApi/SignIn`,
@@ -29,7 +28,6 @@ export function  handleSubmit(values,scb,ecb) {
                 password:values.password
             },
             success: (res) => {
-                console.log(res)
                 dispatch(signInPost({status:AJAX_SUCCESS,info:res.data}));
                 scb(res);
             },
@@ -53,7 +51,6 @@ export function signInPostHandler (state = {
     isFetching: false,
     info:{}
     },action){
-    console.log(action)
     switch (action.status){
         case AJAX_START:
             return Object.assign({}, state, {
@@ -79,7 +76,6 @@ export function signInPostHandler (state = {
 // ------------------------------------
 
 export default function signInReducer (state = {} , action) {
-    console.log(action)
     switch(action.type){
         case SIGNIN_POST:
             return Object.assign({},state,{user:signInPostHandler(state['user'],action.user)})

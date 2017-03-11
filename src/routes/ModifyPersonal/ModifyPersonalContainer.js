@@ -1,32 +1,40 @@
 import React,{ Component ,Children} from 'react'
 import { bindActionCreators } from 'redux'
 import { connect, } from 'react-redux'
-import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button } from 'antd';
+import { Form, Input, Tooltip, Icon, Cascader, Select, message, Button } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 import {actions} from './ModifyPersonalModule'
+import './ModifyPersonalContainer.css';
 
 const residences = [{
     value: 'zhejiang',
-    label: 'Zhejiang',
+    label: '浙江',
     children: [{
         value: 'hangzhou',
-        label: 'Hangzhou',
+        label: '杭州',
         children: [{
             value: 'xihu',
-            label: 'West Lake',
+            label: '西湖',
         }],
     }],
 }, {
     value: 'jiangsu',
-    label: 'Jiangsu',
+    label: '江苏',
     children: [{
         value: 'nanjing',
-        label: 'Nanjing',
+        label: '南京',
         children: [{
             value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
+            label: '中华门',
         }],
+    },{
+        value: 'zhenjian',
+        label: '镇江',
+        children: [{
+            value: 'runzhouqu',
+            label: '润州区',
+        }]
     }],
 }];
 
@@ -34,14 +42,26 @@ class ModifyPersonalForm extends Component {
     state = {
         confirmDirty: false,
     };
+    componentWillMount=()=>{
+        const {actions} =  this.props
+        actions.personalDetails()
+
+    };
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
+            const {personalDetails:{info:info}}=this.props
             if (!err) {
-                console.log('Received values of form: ', values);
+                values['residence']=values['residence'].join()
+                values['user_id']=info.user_id
+
+                this.props.actions.modifyPersonalSubmit(values,
+                    msg=> message.success(msg),
+                    msg=> message.error(msg))
             }
         });
     }
+
     handleConfirmBlur = (e) => {
         const value = e.target.value;
         this.setState({ confirmDirty: this.state.confirmDirty || !!value });
@@ -63,8 +83,10 @@ class ModifyPersonalForm extends Component {
     }
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { info } = this.props.personalDetails;
+
         const formItemLayout = {
-            labelCol: { span: 6 },
+            labelCol: { span: 2 },
             wrapperCol: { span: 14 },
         };
         const tailFormItemLayout = {
@@ -90,10 +112,30 @@ class ModifyPersonalForm extends Component {
             <Form onSubmit={this.handleSubmit}>
                 <FormItem
                     {...formItemLayout}
-                    label="E-mail"
+                    label={(
+                        <span>
+                        昵称&nbsp;
+                            <Tooltip title="需要一些提示么?">
+                                <Icon type="question-circle-o" />
+                            </Tooltip>
+                        </span>
+                    )}
+                    hasFeedback
+                >
+                    {getFieldDecorator('nickname', {
+                        initialValue: info.nickname,
+                        rules: [{ required: true, message: 'Please input your nickname!' }],
+                    })(
+                        <Input />
+                    )}
+                </FormItem>
+                <FormItem
+                    {...formItemLayout}
+                    label="邮箱"
                     hasFeedback
                 >
                     {getFieldDecorator('email', {
+                        initialValue: info.email,
                         rules: [{
                             type: 'email', message: 'The input is not valid E-mail!',
                         }, {
@@ -105,13 +147,11 @@ class ModifyPersonalForm extends Component {
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    label="Password"
+                    label="密码"
                     hasFeedback
                 >
                     {getFieldDecorator('password', {
                         rules: [{
-                            required: true, message: 'Please input your password!',
-                        }, {
                             validator: this.checkConfirm,
                         }],
                     })(
@@ -120,43 +160,25 @@ class ModifyPersonalForm extends Component {
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    label="Confirm Password"
+                    label="重置密码"
                     hasFeedback
                 >
                     {getFieldDecorator('confirm', {
+
                         rules: [{
-                            required: true, message: 'Please confirm your password!',
-                        }, {
                             validator: this.checkPassword,
                         }],
                     })(
                         <Input type="password" onBlur={this.handleConfirmBlur} />
                     )}
                 </FormItem>
+
                 <FormItem
                     {...formItemLayout}
-                    label={(
-                        <span>
-              Nickname&nbsp;
-                            <Tooltip title="What do you want other to call you?">
-                <Icon type="question-circle-o" />
-              </Tooltip>
-            </span>
-                    )}
-                    hasFeedback
-                >
-                    {getFieldDecorator('nickname', {
-                        rules: [{ required: true, message: 'Please input your nickname!' }],
-                    })(
-                        <Input />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Habitual Residence"
+                    label="常住地址"
                 >
                     {getFieldDecorator('residence', {
-                        initialValue: ['zhejiang', 'hangzhou', 'xihu'],
+                        initialValue: (info.residence ? info.residence.split(",") :[]),
                         rules: [{ type: 'array', required: true, message: 'Please select your habitual residence!' }],
                     })(
                         <Cascader options={residences} />
@@ -164,17 +186,18 @@ class ModifyPersonalForm extends Component {
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    label="Phone Number"
+                    label="手机号码"
                 >
                     {getFieldDecorator('phone', {
+                        initialValue: info.phone,
                         rules: [{ required: true, message: 'Please input your phone number!' }],
                     })(
                         <Input addonBefore={prefixSelector} />
                     )}
                 </FormItem>
-                <FormItem
+               {/* <FormItem
                     {...formItemLayout}
-                    label="Captcha"
+                    label="验证码"
                     extra="We must make sure that your are a human."
                 >
                     <Row gutter={8}>
@@ -189,16 +212,10 @@ class ModifyPersonalForm extends Component {
                             <Button size="large">Get captcha</Button>
                         </Col>
                     </Row>
-                </FormItem>
-                <FormItem {...tailFormItemLayout} style={{ marginBottom: 8 }}>
-                    {getFieldDecorator('agreement', {
-                        valuePropName: 'checked',
-                    })(
-                        <Checkbox>I have read the <a>agreement</a></Checkbox>
-                    )}
-                </FormItem>
+                </FormItem>*/}
+
                 <FormItem {...tailFormItemLayout}>
-                    <Button type="primary" htmlType="submit" size="large">Register</Button>
+                    <Button type="primary" htmlType="submit" size="large">提交</Button>
                 </FormItem>
             </Form>
         );
@@ -207,17 +224,15 @@ class ModifyPersonalForm extends Component {
 
 const ModifyPersonal = Form.create()(ModifyPersonalForm);
 
-
 export default connect((state) => {
-    console.log(state)
     const {
-        items: items
+        info: info
     } = state['ModifyPersonal']['personalDetails'] || {
-        items:{}
+        info:{}
     };
     return {
         personalDetails:{
-            items: items
+            info: info
         }
     }
 },dispatch => ({

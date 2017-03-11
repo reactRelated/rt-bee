@@ -25,7 +25,6 @@ export function queryListArticle(body={
     author:"",
     updatetime:""
 }){
-    console.log(body)
     return (dispatch)=> {
         dispatch(queryListPost({status:AJAX_START}));
         return fetchMethods.Post({

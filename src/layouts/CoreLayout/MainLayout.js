@@ -47,13 +47,13 @@ export default class SiderDemo extends React.Component {
                                 defaultOpenKeys={['sub1']}
                                 style={{ height: '100%' }}
                                 onClick={function (item) {
-
                                     browserHistory.push({
                                         pathname: item.key,
                                         state: { path: item.key}
                                     })
                                 }}
                             >
+
                                     <Menu.Item key="/">首页</Menu.Item>
                                 <SubMenu key="sub1" title={<span><Icon type="laptop" />文章管理</span>} >
                                     <Menu.Item key="/AddArticle" >文章添加</Menu.Item>
@@ -61,9 +61,7 @@ export default class SiderDemo extends React.Component {
                                     <Menu.Item key="/AddClassify" >添加分类</Menu.Item>
                                 </SubMenu>
                                 <SubMenu key="sub2" title={<span><Icon type="user" />个人中心</span>}>
-                                    <Menu.Item key="/ModifyPersonal">设置个人资料</Menu.Item>
-                                    <Menu.Item key="/ResetPassword">修改密码</Menu.Item>
-
+                                    <Menu.Item key="/ModifyPersonal">修改资料</Menu.Item>
                                 </SubMenu>
 
                             </Menu>

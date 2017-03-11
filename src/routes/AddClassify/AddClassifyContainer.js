@@ -22,7 +22,6 @@ class AddClassifyForm extends Component {
 
     render() {
 
-        console.log(this)
         const { getFieldDecorator } = this.props.form;
         return (
             <Form onSubmit={this.handleSubmit}>

@@ -15,7 +15,7 @@ let initialState = window.___INITIAL_STATE__ || {}
     }
 };
 initialState =  Object.assign({},initialState,defaultState);*/
-console.log(initialState)
+
 const store = createStore(initialState)
 // ========================================================
 // Render Setup

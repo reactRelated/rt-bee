@@ -7,7 +7,7 @@ export default (store) => ({
             const ArticleList = require('./ModifyPersonalContainer').default
             const reducer = require('./ModifyPersonalModule').default
 
-            injectReducer(store, { key: 'SetPersonal', reducer })
+            injectReducer(store, { key: 'ModifyPersonal', reducer })
 
             cb(null, ArticleList);
 

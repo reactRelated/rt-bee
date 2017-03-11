@@ -2,6 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { browserHistory } from 'react-router'
 import { connect, } from 'react-redux'
+import store from 'store2';
 import {actions} from './SignInModule'
 import { Form, Icon, Input, Button, Checkbox ,message} from 'antd';
 const FormItem = Form.Item;
@@ -12,15 +13,15 @@ import './SigninContainer.css'
 class LoginForm extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(this)
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.props.actions.handleSubmit(values, (res)=>{
                     message.success(res.msg);
 
+                    store.session({apps:{user:res.data}})
                     browserHistory.push({
                         pathname: '/',
-                        state: { username: 'bee',a:1 }
+                        state: { username:  res.data.username}
                     })
                 },(res)=>{
                     message.error(res.msg);
@@ -30,7 +31,6 @@ class LoginForm extends React.Component {
     };
 
     render() {
-        console.log(this)
         const { getFieldDecorator } = this.props.form;
         const { actions } = this.props;
         return (
@@ -72,11 +72,9 @@ const Signin = Form.create()(LoginForm);
 
 
 const mapStateToProps = (state) => {
-    console.log(state)
     const {
         info: info
     } = state['SignIn']['user'] || {};
-    console.log(info)
     return{
         user:{
             info:info

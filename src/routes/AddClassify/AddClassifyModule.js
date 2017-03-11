@@ -20,7 +20,6 @@ export function  addClassifyPost(addClassifySubmit={}) {
 
 
 export function  addClassifySubmit(values,scb) {
-    console.log(values)
     return dispatch=> {
         dispatch(addClassifyPost({status:AJAX_START}));
         return fetchMethods.Post({

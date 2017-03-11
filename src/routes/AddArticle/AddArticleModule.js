@@ -27,7 +27,6 @@ export function  selectArticleClassifyPost(classify={}) {
 }
 
 export function  addArticleSubmit(values,scb) {
-    console.log(values)
     return dispatch=> {
         dispatch(addArticlePost({status:AJAX_START}));
         return fetchMethods.Post({

@@ -4,9 +4,8 @@ import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
 import { updateLocation } from './location'
 import createLogger from 'redux-logger'
-import persistState from 'redux-sessionstorage'
 import DevTools from '../containers/DevTools'
-
+import {persistStore, autoRehydrate} from 'redux-persist'
 export default (initialState = {}) => {
   // ======================================================
   // 中间件配置
@@ -16,7 +15,7 @@ export default (initialState = {}) => {
   // ======================================================
   // 存储 增强器 => 强化函数
   // ======================================================
-  const enhancers = [persistState()]
+  const enhancers = []
 
     //Redux 方法 compose() （译者注：compose(funcA, funcB, funcC) 形象为 compose(funcA(funcB(funcC())))）
   let composeEnhancers = compose;
@@ -29,7 +28,6 @@ export default (initialState = {}) => {
 
       enhancers.push(DevTools.instrument())
   }
-  console.log(enhancers)
   // ======================================================
   // 存储实例化和HMR设置  HMR == hot module replacement
   // ======================================================
@@ -41,7 +39,6 @@ export default (initialState = {}) => {
       ...enhancers
     )
   )
-
 
   // ======================================================
   // store 里面创建 asyncReducers 集合 存储异步 Reducer

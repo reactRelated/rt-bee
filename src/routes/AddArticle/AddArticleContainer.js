@@ -19,7 +19,6 @@ class AddArticleForm extends Component {
         });
     }
     handleSelectChange = (value) => {
-        console.log(value);
         console.log(this.props.classify)
 
     }
@@ -30,7 +29,6 @@ class AddArticleForm extends Component {
 
     render() {
 
-        console.log(this)
         const { getFieldDecorator } = this.props.form;
         const { classify } = this.props;
         const  options = classify.items.map(d => <Option key={d.classify_id}>{d.classifyname}</Option>);
@@ -70,10 +68,9 @@ class AddArticleForm extends Component {
                     {getFieldDecorator('info', {
                         rules: [{ required: true, message: '请填写文章内容!' }],
                     })(
-                        <Input type="textarea" placeholder="文章内容" autosize={{ minRows: 2, maxRows: 6 }} />
+                        <Input type="textarea" placeholder="文章内容" autosize={{ minRows: 20, maxRows: 25 }} />
                     )}
                 </FormItem>
-
                 <FormItem
                     wrapperCol={{
                         xs: { span: 8, offset: 0 },
@@ -92,13 +89,11 @@ class AddArticleForm extends Component {
 const AddArticle = Form.create()(AddArticleForm);
 
 const mapStateToProps = (state) => {
-    console.log(state)
     const {
         items: items
     } = state['AddArticle']['classify'] || {
         items:[]
     };
-    console.log(items)
    return {
        classify:{
            items: items

@@ -173,7 +173,6 @@ const ArticleList = Form.create()(QueryListForm);
 
 
 export default connect((state) => {
-    console.log(state)
     const {
         items: items
     } = state['ArticleList']['queryList'] || {

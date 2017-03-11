@@ -1,3 +1,4 @@
+import { browserHistory } from 'react-router'
 import fetch from 'isomorphic-fetch';
 export const AJAX_START = 'AJAX_START'
 export const AJAX_SUCCESS = 'AJAX_SUCCESS'
@@ -24,8 +25,9 @@ const httpDefault = {
 
 
 //  失败与成功的状态
+// 101 未登录
 const successStatus = 1000;
-const errorStatus = 900 ;
+const errorStatus = [900,101];
 
 /**
  * 根据ajax返回运行相关回调方法
@@ -36,8 +38,21 @@ const errorStatus = 900 ;
 function _runCallbacks(res, opts) {
     if (res.code == successStatus) {
         getProType(opts.success) == "function" && opts.success(res);
-    } else if (res.code == errorStatus) {
-        getProType(opts.error) == "function" && opts.error(res);
+    } else if (errorStatus.indexOf(res.code) !== -1) {
+        notLoggedIn(res.code,()=>{
+            getProType(opts.error) == "function" && opts.error(res)
+        })
+    }else {
+        alert("错误状态码异常")
+    }
+}
+
+
+function notLoggedIn(code,cb){
+    if(code == 101){
+        browserHistory.push('/SignIn')
+    }else {
+        cb()
     }
 }
 
