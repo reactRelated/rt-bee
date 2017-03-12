@@ -57,7 +57,7 @@ export function modifyPersonalSubmit(values,scb,ecb){
                  dispatch(modifyPersonalPost({
                     status: AJAX_ERROR
                 },ex));
-                ecb(res.msg)
+                ecb(ex.msg)
             }
         })
     }

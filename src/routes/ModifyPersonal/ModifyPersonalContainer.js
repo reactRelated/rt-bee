@@ -1,7 +1,7 @@
 import React,{ Component ,Children} from 'react'
 import { bindActionCreators } from 'redux'
 import { connect, } from 'react-redux'
-import { Form, Input, Tooltip, Icon, Cascader, Select, message, Button } from 'antd';
+import { Form, Input, Tooltip, Icon, Cascader, Select, message, Button ,Upload ,Modal} from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 import {actions} from './ModifyPersonalModule'
@@ -38,15 +38,11 @@ const residences = [{
     }],
 }];
 
-class ModifyPersonalForm extends Component {
+class ModifyForm extends Component {
     state = {
         confirmDirty: false,
     };
-    componentWillMount=()=>{
-        const {actions} =  this.props
-        actions.personalDetails()
 
-    };
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
@@ -222,7 +218,110 @@ class ModifyPersonalForm extends Component {
     }
 }
 
-const ModifyPersonal = Form.create()(ModifyPersonalForm);
+const Modify = Form.create()(ModifyForm);
+//设置头像
+class Avatar  extends Component {
+    state = {
+        previewVisible: false,
+        previewImage: '',
+        fileList: []
+    };
+
+    componentWillReceiveProps = (nextProps)=>{
+        console.log(nextProps)
+        console.log("componentWillReceiveProps")
+        if (this.props !== nextProps) {
+            this.state.fileList[0]={
+                uid: -1,
+                name: 'avator.png',
+                status: 'done',
+                url: nextProps.personalDetails.info.avator,
+            }
+        }
+
+    }
+
+    handleCancel = () => this.setState({ previewVisible: false })
+
+    handlePreview = (file) => {
+        this.setState({
+            previewImage: file.url || file.thumbUrl,
+            previewVisible: true,
+        });
+    }
+
+    handleChange = ({ fileList }) => this.setState({ fileList })
+    handleRemove=({fileList}) =>{
+        console.log("handleRemove")
+    }
+
+    render() {
+        const { previewVisible, previewImage, fileList } = this.state;
+
+        const uploadButton = (
+            <div>
+                <Icon type="plus" />
+                <div className="ant-upload-text">Upload</div>
+            </div>
+        );
+        return (
+            <div className="clearfix">
+                <Upload
+                    action={__SERVER_HOST__+'/AdminApi/EditUserAvatar'}
+                    listType="picture-card"
+                    fileList={fileList}
+                    onPreview={this.handlePreview}
+                    onChange={this.handleChange}
+                    onRemove={this.handleRemove}
+                >
+                    {fileList.length >= 1 ? null : uploadButton}
+                </Upload>
+                <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                </Modal>
+            </div>
+        );
+    }
+}
+
+ class ModifyPersonal extends Component {
+     componentWillMount=()=>{
+         const {actions} =  this.props
+         console.log(actions)
+         actions.personalDetails()
+
+     };
+        render(){
+            const {props} =  this
+            const formItemLayout = {
+                labelCol: { span: 2 },
+                wrapperCol: { span: 14 },
+            };
+
+            return (
+                <div>
+                    <div className="ant-form-horizontal">
+                        <FormItem
+                            {...formItemLayout}
+                            label={(
+                                <span>
+                        头像&nbsp;
+                            <Tooltip title="头像是不与下面表单关联?">
+                                <Icon type="question-circle-o" />
+                            </Tooltip>
+                        </span>
+                            )}
+                            hasFeedback
+                        >
+                            <Avatar  {...props}/>
+                        </FormItem>
+                    </div>
+                    <Modify {...props}/>
+                </div>
+            )
+        }
+ }
+
 
 export default connect((state) => {
     const {
@@ -230,6 +329,7 @@ export default connect((state) => {
     } = state['ModifyPersonal']['personalDetails'] || {
         info:{}
     };
+
     return {
         personalDetails:{
             info: info

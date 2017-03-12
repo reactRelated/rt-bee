@@ -15,7 +15,7 @@ export default class SiderDemo extends React.Component {
         this.state =  {layoutMinHeight: document.documentElement.clientHeight};
     }
 
-    componentDidMount=()=>{
+    componentWillMount=()=>{
         window.onresize=function () {
             this.setState({layoutMinHeight: document.documentElement.clientHeight});
         }.bind(this);
@@ -26,17 +26,8 @@ export default class SiderDemo extends React.Component {
         return (
             <Layout  style={{ minHeight:layoutMinHeight}}>
                 <Header className="header">
-                    <div className="logo" />
-                    <Menu
-                        theme="dark"
-                        mode="horizontal"
-                        defaultSelectedKeys={['2']}
-                        style={{ lineHeight: '64px' }}
-                    >
-                        <Menu.Item key="1">nav 1</Menu.Item>
-                        <Menu.Item key="2">nav 2</Menu.Item>
-                        <Menu.Item key="3">nav 3</Menu.Item>
-                    </Menu>
+                    <div className="logo">Bee</div>
+                    <img />
                 </Header>
                 <Layout>
                     <Sider width={200} style={{ background: '#fff' }}>
