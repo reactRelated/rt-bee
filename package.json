@@ -4,11 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "better-npm-run start"
+    "start": "better-npm-run start",
+    "compile": "better-npm-run compile",
+    "deploy:prod": "better-npm-run deploy:prod"
   },
   "betterScripts": {
     "start": {
       "command": "node bin/dev-server",
+      "env": {
+        "DEBUG": "app:*"
+      }
+    },
+    "compile": {
+      "command": "node bin/compile",
       "env": {
         "DEBUG": "app:*"
       }
@@ -47,6 +55,7 @@
     "debug": "^2.6.1",
     "express": "^4.14.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "fs-extra": "^2.1.1",
     "html-webpack-plugin": "^2.28.0",
     "http-proxy-middleware": "^0.17.3",
     "ip": "^1.1.4",
