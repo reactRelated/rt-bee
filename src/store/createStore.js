@@ -5,7 +5,6 @@ import makeRootReducer from './reducers'
 import { updateLocation } from './location'
 import createLogger from 'redux-logger'
 import DevTools from '../containers/DevTools'
-import {persistStore, autoRehydrate} from 'redux-persist'
 export default (initialState = {}) => {
   // ======================================================
   // 中间件配置
