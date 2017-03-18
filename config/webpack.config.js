@@ -4,11 +4,20 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const project = require('./project.config')
+
 const debug = require('debug')('app:config:webpack')
 
 const __DEV__ = project.globals.__DEV__
 const __PROD__ = project.globals.__PROD__
 const __TEST__ = project.globals.__TEST__
+
+debug(project.paths.base())
+debug(project.paths.client('./main1.js'))
+debug(project.paths.public('main.js'))
+debug(project.paths.dist('main.js'))
+debug(project.paths.dist())
+
+
 
 debug('Creating configuration.')
 const webpackConfig = {
