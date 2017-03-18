@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "better-npm-run start",
-    "compile": "better-npm-run compile",
-    "deploy:prod": "better-npm-run deploy:prod"
+    "compile": "better-npm-run compile"
   },
   "betterScripts": {
     "start": {
