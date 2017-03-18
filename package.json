@@ -12,6 +12,7 @@
     "start": {
       "command": "node bin/dev-server",
       "env": {
+        "NODE_ENV": "development",
         "DEBUG": "app:*"
       }
     },
