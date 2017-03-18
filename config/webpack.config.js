@@ -1,6 +1,6 @@
 // const argv = require('yargs').argv
 const webpack = require('webpack')
-// const cssnano = require('cssnano')
+const cssnano = require('cssnano')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const project = require('./project.config')
@@ -167,14 +167,14 @@ webpackConfig.module.loaders.push({
 
 /*webpackConfig.sassLoader = {
   includePaths : project.paths.client('styles')
-}
+}*/
 
 webpackConfig.postcss = [
   cssnano({
     autoprefixer : {
       add      : true,
       remove   : true,
-      browsers : ['last 2 versions']
+      browsers : ['last 5 versions']
     },
     discardComments : {
       removeAll : true
@@ -186,7 +186,6 @@ webpackConfig.postcss = [
     sourcemap     : true
   })
 ]
-*/
 
 // File loaders
 /* eslint-disable */
